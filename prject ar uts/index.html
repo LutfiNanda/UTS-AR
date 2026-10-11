@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>UTS WebAR - Evolusi Piala Dunia</title>
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body>
+    <!-- LAPISAN 1: TAMPILAN AR -->
+    <div id="ar-container">
+      <a-scene
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+        vr-mode-ui="enabled: false"
+      >
+        <a-entity id="main-camera" camera></a-entity>
+
+        <!-- Container Dasar (Rumput & Objek) -->
+        <a-entity id="floor-container" position="0 -1.0 -4">
+          <a-circle
+            rotation="-90 0 0"
+            radius="15"
+            src="assets/grass.png"
+            repeat="15 15"
+          ></a-circle>
+
+          <a-entity id="ball-target" position="0 0 0"></a-entity>
+        </a-entity>
+      </a-scene>
+    </div>
+
+    <!-- Audio Players -->
+    <audio id="home-audio" src="assets/Wonderwall - Oasis anthem home-[AudioTrimmer.com].mp3" loop></audio>
+    <audio id="anthem-player" loop preload="auto"></audio>
+
+    <!-- LAPISAN 2: TAMPILAN TEKS / HOME -->
+    <div id="text-mode-ui">
+      <!-- Badge Audio Wonderwall (Pojok Kanan Atas Home) -->
+      <div id="home-audio-badge" class="home-audio-badge glass-gold" onclick="toggleHomeAudio()">
+        <div class="equalizer-bars">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="audio-text"><i class="fa-solid fa-music"></i> Oasis - Wonderwall</span>
+      </div>
+
+      <!-- Hero Header / Logo Banner Utama -->
+      <header class="hero-header glass-gold">
+        <div class="logo-container">
+          <img src="assets/logo-wc.jpg" alt="FIFA World Cup Logo" class="wc-logo" />
+          <div class="title-box">
+            <span class="badge-wc"><i class="fa-solid fa-trophy"></i> FIFA WORLD CUP</span>
+            <h1>Evolusi Piala Dunia</h1>
+            <p class="subtitle">Jelajahi Sejarah Bola, Maskot & Trofi dalam AR</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Panel (Histori) -->
+      <div class="text-container glass-card">
+        <h1 id="text-title">Tiento & T-Model (1930)</h1>
+        <div class="badge-container">
+          <span class="badge">📅 Tahun: <span id="text-year">1930</span></span>
+          <span class="badge">🏆 Juara: <span id="text-winner">Uruguay</span></span>
+        </div>
+        <div class="history-content">
+          <p id="text-history">Sejarah bola akan muncul di sini...</p>
+        </div>
+        <button id="btn-start-ar" class="btn-glow-gold" onclick="startARMode()">
+          <i class="fa-solid fa-camera-rotate"></i> Mulai AR (Lihat 3D & Putar Anthem)
+        </button>
+      </div>
+    </div>
+
+    <!-- LAPISAN 3: UI KONTROL AR -->
+    <div id="ar-mode-ui" style="display: none">
+      <div class="ar-top-container">
+        <!-- BARIS 1: Tombol Kembali & Info Keterangan Bola (Paling Atas) -->
+        <div class="ar-header-row">
+          <button id="btn-close-ar" class="btn-back-ar" onclick="stopARMode()">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+          </button>
+          
+          <div id="info-card" class="glass-gold">
+            <h3 id="ar-title">Nama Bola</h3>
+            <div class="ar-info-sub">
+              <span id="ar-year">📅 Tahun: -</span>
+              <span id="ar-winner">🏆 Juara: -</span>
+              <span id="ar-host">📍 Tuan Rumah: -</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BARIS 2: Petunjuk Gestur & Badge Lagu Anthem (Di Bawah Keterangan) -->
+        <div class="ar-sub-row">
+          <div class="hint-chip glass-neon">
+            👆 1 Jari: Putar 360° • 🤏 2 Jari: Zoom
+          </div>
+          <div id="audio-wave-badge" class="audio-badge glass-gold">
+            <div class="equalizer-bars">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="audio-text">🎵 Anthem</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAPISAN 4: MENU BAWAH -->
+    <div class="bottom-menu glass-dark">
+      <div class="item-selector" id="sub-menu-ui"></div>
+      <div class="category-tabs">
+        <button class="tab-btn active" id="tab-ball" onclick="switchCategory('ball')">⚽ Bola</button>
+        <button class="tab-btn" id="tab-mascot" onclick="switchCategory('mascot')">🧸 Maskot</button>
+        <button class="tab-btn" id="tab-trophy" onclick="switchCategory('trophy')">🏆 Trofi</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
